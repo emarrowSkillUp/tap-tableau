@@ -37,7 +37,7 @@ class Taptableau(Tap):
     
     def get_table_definitions(self) -> list[TableDefinition]:
         """Return a list of table defintions"""
-        with HyperProcess(telemetry=False) as hyper:
+        with HyperProcess(telemetry=False, parameters={'log_config': ''}) as hyper:
             with Connection(hyper.endpoint, self.config.get("hyper_file_path")) as connection:
                 return [connection.catalog.get_table_definition(table_name) for table_name in connection.catalog.get_table_names("Extract")]
             

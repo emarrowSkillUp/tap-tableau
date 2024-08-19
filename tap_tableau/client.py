@@ -52,9 +52,9 @@ class HyperStream(Stream):
     
     def get_rows(self) -> Iterable[list]:
         """Return a generator of the rows in the Hyper table"""
-        with HyperProcess(telemetry=False) as hyper:
+        with HyperProcess(telemetry=False, parameters={'log_config': ''}) as hyper:
             with Connection(hyper.endpoint, self.file_path) as connection:
-                with connection.execute_query(f'select * from {self.table_definition.table_name} limit 100') as result:
+                with connection.execute_query(f'select * from {self.table_definition.table_name}') as result:
                     yield from result
 
     @property
