@@ -16,7 +16,7 @@ plugins:
     - about
     - stream-maps
     config:
-      hyper_file_path: "All Time Jobs.hyper"
+      hyper_dir: extracts
 
   loaders:
   - name: target-jsonl

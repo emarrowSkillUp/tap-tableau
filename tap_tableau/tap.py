@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
+import os
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
@@ -20,10 +22,10 @@ class Taptableau(Tap):
 
     config_jsonschema = th.PropertiesList(
         th.Property(
-            "hyper_file_path",
+            "hyper_dir",
             th.StringType,
             required=True,
-            description="The file path to the latest hyper file downloaded from Tableau",
+            description="Directory containing hyper files"
         )
     ).to_dict()
 
@@ -35,10 +37,15 @@ class Taptableau(Tap):
             TapCapabilities.DISCOVER,
         ]
     
-    def get_table_definitions(self) -> list[TableDefinition]:
-        """Return a list of table defintions"""
+    def get_hyper_files(self) -> list[str]:
+        """Returns a list of paths to the downloaded hyperfiles"""
+        hyper_dir = Path(self.config.get('hyper_dir'))
+        return [os.path.join(self.config.get('hyper_dir'), f.name) for f in hyper_dir.iterdir() if f.is_file()]
+    
+    def get_table_definitions(self, hyper_file) -> list[TableDefinition]:
+        """Returns a list of table defintions for a given hyper file"""
         with HyperProcess(telemetry=False, parameters={'log_config': ''}) as hyper:
-            with Connection(hyper.endpoint, self.config.get("hyper_file_path")) as connection:
+            with Connection(hyper.endpoint, hyper_file) as connection:
                 return [connection.catalog.get_table_definition(table_name) for table_name in connection.catalog.get_table_names("Extract")]
             
     def get_table_entity(self, table_definition: TableDefinition) -> str:
@@ -56,11 +63,12 @@ class Taptableau(Tap):
         return [
             HyperStream(
                 tap=self,
-                file_path=self.config.get("hyper_file_path"),
+                file_path=hyper_file,
                 table_definition=table_definition,
                 name=self.get_table_entity(table_definition)
             )
-            for table_definition in self.get_table_definitions()
+            for hyper_file in self.get_hyper_files()
+            for table_definition in self.get_table_definitions(hyper_file)
         ]
 
 
