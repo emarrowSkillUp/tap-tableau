@@ -35,6 +35,7 @@ class Taptableau(Tap):
         return [
             TapCapabilities.CATALOG,
             TapCapabilities.DISCOVER,
+            TapCapabilities.STATE
         ]
     
     def get_hyper_files(self) -> list[str]:

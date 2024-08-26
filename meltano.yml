@@ -1,13 +1,13 @@
 version: 1
 send_anonymous_usage_stats: true
-project_id: "tap-tableau"
+project_id: tap-tableau
 default_environment: test
 environments:
 - name: test
 plugins:
   extractors:
-  - name: "tap-tableau"
-    namespace: "tap_tableau"
+  - name: tap-tableau
+    namespace: tap_tableau
     pip_url: -e .
     capabilities:
     - state
@@ -16,9 +16,20 @@ plugins:
     - about
     - stream-maps
     config:
-      hyper_dir: extracts
-
+      hyper_dir: extracts/tableau
+    metadata:
+      programs:
+        replication-method: INCREMENTAL
+        replication-key: updatedAt
+    select:
+    - programs.*
   loaders:
   - name: target-jsonl
     variant: andyh1203
     pip_url: target-jsonl
+  - name: target-sqlite
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-sqlite.git
+    config:
+      database: output/tableau-test
+      batch_size: 10000
