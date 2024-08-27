@@ -31,7 +31,7 @@ hyper_singer_mapping = {
 class HyperStream(Stream):
     """Stream class for tableau streams."""
     primary_keys = ["_id"]
-    is_sorted = True
+#    is_sorted = True
 
     def __init__(self, file_path: str, table_definition: TableDefinition, *args, **kwargs):
         """Init HyperStream"""
