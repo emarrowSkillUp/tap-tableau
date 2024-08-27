@@ -67,10 +67,10 @@ class HyperStream(Stream):
         with HyperProcess(telemetry=False, parameters={'log_config': ''}) as hyper:
             with Connection(hyper.endpoint, self.file_path) as connection:
                 if bookmark := self.get_starting_timestamp(context):
-                    with connection.execute_query(f'select * from {self.table_definition.table_name} where {Name(self.replication_key)} >= \'{bookmark.isoformat(" ")}\' order by {Name(self.replication_key)}') as result:
+                    with connection.execute_query(f'select * from {self.table_definition.table_name} where {Name(self.replication_key)} >= \'{bookmark.isoformat(" ")}\' and {Name(self.replication_key)} is not null order by {Name(self.replication_key)}') as result:
                         yield from result
                 else:
-                    with connection.execute_query(f'select * from {self.table_definition.table_name} order by {Name(self.replication_key)}') as result:
+                    with connection.execute_query(f'select * from {self.table_definition.table_name} where {Name(self.replication_key)} is not null order by {Name(self.replication_key)}') as result:
                         yield from result
 
     @property
