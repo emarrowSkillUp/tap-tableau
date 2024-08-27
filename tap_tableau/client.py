@@ -5,6 +5,7 @@ from __future__ import annotations
 from os import PathLike
 from typing import TYPE_CHECKING, Any, Iterable
 from datetime import timezone
+import re
 
 from tableauhyperapi import HyperProcess, Connection, TableDefinition, SqlType, Name
 
@@ -38,6 +39,15 @@ class HyperStream(Stream):
         self.table_definition = table_definition
         super().__init__(*args, **kwargs)
 
+    def clean_column_name(self, column: str) -> str:
+        """Cleans column names to remove special characters added by Tableau"""
+        regex = re.compile('(.+)\s\(.+')
+        match = regex.search(column)
+        if match:
+            return match.group(1).replace('.', '_')
+        else:
+            return column.replace('.', '_')
+
     def get_records(self, context: Context | None) -> Iterable[dict]:
         """Return a generator of record-type dictionary objects.
 
@@ -50,7 +60,7 @@ class HyperStream(Stream):
         """
         #header = [column.name.unescaped for column in self.table_definition.columns]
         for row in self.get_rows(context):
-            yield {col.name.unescaped: (value if col.type != SqlType.timestamp() else value.astimezone(timezone.utc).to_datetime().isoformat()) for col, value in zip(self.table_definition.columns, row)}
+            yield {self.clean_column_name(col.name.unescaped): (value if col.type != SqlType.timestamp() else value.astimezone(timezone.utc).to_datetime().isoformat()) for col, value in zip(self.table_definition.columns, row)}
     
     def get_rows(self, context: Context | None) -> Iterable[list]:
         """Return a generator of the rows in the Hyper table"""
@@ -72,5 +82,5 @@ class HyperStream(Stream):
         """
         properties: list[th.Property] = []
 
-        properties.extend(th.Property(column.name.unescaped, hyper_singer_mapping.get(column.type)) for column in self.table_definition.columns)
+        properties.extend(th.Property(self.clean_column_name(column.name.unescaped), hyper_singer_mapping.get(column.type)) for column in self.table_definition.columns)
         return th.PropertiesList(*properties).to_dict()
