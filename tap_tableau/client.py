@@ -60,7 +60,7 @@ class HyperStream(Stream):
         """
         #header = [column.name.unescaped for column in self.table_definition.columns]
         for row in self.get_rows(context):
-            yield {self.clean_column_name(col.name.unescaped): (value if col.type != SqlType.timestamp() else value.astimezone(timezone.utc).to_datetime().isoformat()) for col, value in zip(self.table_definition.columns, row)}
+            yield {self.clean_column_name(col.name.unescaped): (value if col.type != SqlType.timestamp() and value is not None else value.astimezone(timezone.utc).to_datetime().isoformat()) for col, value in zip(self.table_definition.columns, row)}
     
     def get_rows(self, context: Context | None) -> Iterable[list]:
         """Return a generator of the rows in the Hyper table"""

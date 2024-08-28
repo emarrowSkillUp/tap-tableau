@@ -18,11 +18,11 @@ plugins:
     config:
       hyper_dir: extracts/tableau
     metadata:
-      events*:
+      programs*:
         replication-method: INCREMENTAL
-        replication-key: createdAt
+        replication-key: updatedAt
     select:
-    - events*.*
+    - programs*.*
   loaders:
   - name: target-jsonl
     variant: andyh1203
