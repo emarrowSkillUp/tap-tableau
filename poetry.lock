@@ -488,21 +488,25 @@ test = ["flufl.flake8", "importlib-resources (>=1.3)", "jaraco.test (>=5.4)", "p
 
 [[package]]
 name = "importlib-resources"
-version = "6.4.3"
+version = "6.4.5"
 description = "Read resources from Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "importlib_resources-6.4.3-py3-none-any.whl", hash = "sha256:2d6dfe3b9e055f72495c2085890837fc8c758984e209115c8792bddcb762cd93"},
-    {file = "importlib_resources-6.4.3.tar.gz", hash = "sha256:4a202b9b9d38563b46da59221d77bb73862ab5d79d461307bcb826d725448b98"},
+    {file = "importlib_resources-6.4.5-py3-none-any.whl", hash = "sha256:ac29d5f956f01d5e4bb63102a5a19957f1b9175e45649977264a1416783bb717"},
+    {file = "importlib_resources-6.4.5.tar.gz", hash = "sha256:980862a1d16c9e147a59603677fa2aa5fd82b87f223b6cb870695bcfce830065"},
 ]
 
 [package.dependencies]
 zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
+check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1)"]
+cover = ["pytest-cov"]
 doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-test = ["jaraco.test (>=5.4)", "pytest (>=6,!=8.1.*)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy", "pytest-ruff (>=0.2.1)", "zipp (>=3.17)"]
+enabler = ["pytest-enabler (>=2.2)"]
+test = ["jaraco.test (>=5.4)", "pytest (>=6,!=8.1.*)", "zipp (>=3.17)"]
+type = ["pytest-mypy"]
 
 [[package]]
 name = "inflection"
@@ -1239,15 +1243,15 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "tableauhyperapi"
-version = "0.0.20027"
+version = "0.0.20746"
 description = "Hyper API for Python"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "tableauhyperapi-0.0.20027-py3-none-macosx_10_11_x86_64.whl", hash = "sha256:1837adf9663e70dc56111fe68629f5db8f9f792851b45f732054d3294f726a70"},
-    {file = "tableauhyperapi-0.0.20027-py3-none-macosx_13_0_arm64.whl", hash = "sha256:c446720e1796316656427e24b3ef732a24da114be09d61bf81dd2cd9d3d060e0"},
-    {file = "tableauhyperapi-0.0.20027-py3-none-manylinux2014_x86_64.whl", hash = "sha256:aa52670e3858c1be14d8aaf2f8a8a0c7342e42f84997a43b7d42a66137dc6f4e"},
-    {file = "tableauhyperapi-0.0.20027-py3-none-win_amd64.whl", hash = "sha256:6d714501b8651c56b36a7be171b618433d40946546985fb00a0181297dbe173f"},
+    {file = "tableauhyperapi-0.0.20746-py3-none-macosx_10_11_x86_64.whl", hash = "sha256:d1dcfff036f640f3f3370ccb4de0d8948ca4959f8be9de81f49e10f692faa62f"},
+    {file = "tableauhyperapi-0.0.20746-py3-none-macosx_13_0_arm64.whl", hash = "sha256:c9b329c502544036615697aba1ca2f5c46d3b4c1c264645fe95612fd64dc3e78"},
+    {file = "tableauhyperapi-0.0.20746-py3-none-manylinux2014_x86_64.whl", hash = "sha256:a8f0532b47749a134f40bc5d2d95917ba281d371fb33da00013723f8e7078b4c"},
+    {file = "tableauhyperapi-0.0.20746-py3-none-win_amd64.whl", hash = "sha256:e4bb12cfdf738198f6889db8dd0bfe4386480c99f4e1d6143dfbd44f704920bb"},
 ]
 
 [package.dependencies]
@@ -1312,4 +1316,4 @@ s3 = ["fs-s3fs"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8"
-content-hash = "65085ee36054f822dea0817e24fe608cacd6abda60cd0a72a2884b354da63ebb"
+content-hash = "6b0cb4c1b0b601fa5c41f791081d936ed01fcf67cafbe4c3bfb5cb85dee21e7e"
